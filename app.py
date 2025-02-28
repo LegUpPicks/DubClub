@@ -16,6 +16,12 @@ conn = st.connection("gsheets", type=GSheetsConnection)
 df = conn.read(spreadsheet=url, usecols=[0, 1, 2, 3, 4, 5, 6, 7,8])
 df['Date'] = pd.to_datetime(df['Date'])
 
+# Make sure the DataFrame starts from February 24th, 2025
+start_date = pd.to_datetime("2025-02-24")
+
+# Filter out rows with dates before the start date
+df = df[df['Date'] >= start_date]
+
 # Sidebar to filter by sport and date range
 sports = df['Sport'].unique()
 selected_sport = st.sidebar.selectbox('Select Sport', options=['All'] + list(sports))
